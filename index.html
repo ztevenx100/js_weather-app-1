@@ -9,34 +9,35 @@
 </head>
 <body>
     <main class="weather-app" >
-        <div class="container" >
-        <aside>
-            <section>
+        <article class="info-weather">
+            <section class="container">
                 <h1 class="brand" >Clima</h1>
-                <h2 class="temp" >16°</h2>
-                <div class="city-time" >
-                    <h3 class="name" >Colombia</h3>
-                    <small>
-                        <span class="time" >06:09</span>
-                        -
-                        <span class="date" >Monday</span>
-                    </small>
-                </div>
-                <div class="weather" >
-                    <object 
-                        type="image/svg+xml" 
-                        id="svg-container" 
-                    ></object>
-                    <span class="condition" >Cloudy</span>
+                <div>
+                    <h2 class="temp" >16°</h2>
+                    <div class="city-time" >
+                        <h3 class="name" >Colombia</h3>
+                        <small>
+                            <span class="time" >06:09</span>
+                            -
+                            <span class="date" >Monday</span>
+                        </small>
+                    </div>
+                    <div class="weather" >
+                        <object 
+                            id="svg-container" 
+                        ></object>
+                        <span class="condition" >Cloudy</span>
+                    </div>
                 </div>
             </section>
-        </aside>
-        <article class="panel" >
-            <form action="" id="locationInput" >
+        </article>
+        <aside class="panel" >
+            <form id="locationInput" >
                 <input 
                     type="text" 
-                    name="search" 
-                    id="inputSearch" 
+                    id="inputSearch"
+                    name="search"
+                    class="search"
                     placeholder="Searc location..."
                 />
                 <button type="submit" class="submit" >
@@ -64,15 +65,115 @@
                     <span class="wind" >8km/h</span>
                 </li>
             </ul>
-        </article>
-        </div>
+        </aside>
     </main>
 
     <script type="module">
-        import { SvgWeather } from './lib/icons/SvgWeather.js';
+        import SvgWeather from './lib/icons/SvgWeather.js';
         import { prueba } from './lib/utils.js';
         
-        document.getElementById('svg-container').innerHTML = SvgWeather({width: 50, height: 50});
+        document.getElementById('svg-container').innerHTML = SvgWeather({width: 50, height: 50, fill:'#fff'});
+
+        const app = document.querySelector('.weather-app');
+        const temp = document.querySelector('.temp');
+        const dateOutPut = document.querySelector('.date');
+        const timeOutPut = document.querySelector('.time');
+        const conditionOutPut = document.querySelector('.condition');
+        const nameOutPut = document.querySelector('.name');
+        const icon = document.querySelector('.icon');
+        const cloudOutPut = document.querySelector('.cloud');
+        const humidityOutPut = document.querySelector('.humidity');
+        const windOutPut = document.querySelector('.wind');
+        const form = document.getElementById('locationInput');
+        const searchOutPut = document.querySelector('.search');
+        const btn = document.querySelector('.submit');
+        const cities = document.querySelectorAll('.city');
+
+        let cityInput = "London";
+
+        cities.forEach((city) => {
+            city.addEventListener('click', (e) => {
+                cityInput = e.target.innerHTML;
+                fetchWeatherData();
+                app.style.opacity = "0";
+            });
+        });
+        
+        form.addEventListener('submit', (e) => {
+            if (searchOutPut.value.length === 0) {
+                alert('ingresa fecha');
+            } else {
+                cityInput = searchOutPut.value;
+                fetchWeatherData();
+                searchOutPut.value = "";
+                app.style.opacity = "0";
+            }
+            e.preventDefault();
+        });
+
+        /**
+         * Dia de la semana.
+         * @param {number} day - dia
+         * @returns {string} dia de la semana
+         */
+        const dayOfTheWeek = (day, month, year) => {
+            const weekDay = ["Domingo","Lunes","Martes","Miercoles","Jueves","viernes","Sabado"];
+            //console.log(new Date(`${day}/${month}/${year}`).getDay());
+            return weekDay[new Date(`${day}/${month}/${year}`).getDay()];
+        }
+
+        const fetchWeatherData = () => {
+            fetch(`http://api.weatherapi.com/v1/current.json?key=781a2f12506d41bf94f162257240207&q=${cityInput}&aqi=no`)
+            .then(respone => respone.json())
+            .then(data => {
+                //console.log(data);
+                temp.innerHTML = data.current.temp_c + "°";
+                conditionOutPut.innerHTML = data.current.condition.text;
+                const date = data.location.localtime;
+                const year = parseInt(date.substr(0,4));
+                const month = parseInt(date.substr(5,2));
+                const day = parseInt(date.substr(8,2));
+                const time = date.substr(11);
+                dateOutPut.innerHTML = `${dayOfTheWeek(day, month, year)} ${day}, ${month} ${year}`;
+                timeOutPut.innerHTML = time;
+
+                nameOutPut.innerHTML = data.location.name;
+                // const iconId = '';
+                cloudOutPut.innerHTML = data.current.cloud + "%";
+                humidityOutPut.innerHTML = data.current.humidity + "%";
+                windOutPut.innerHTML = data.current.wind_kph + "%";
+
+                let timeOfDay = 'day';
+                const code = data.current.condition.code;
+                const codeListCloudy = [1003, 1006, 1009, 1030, 1069, 1087, 1135, 1273, 1276, 1279, 1282];
+                const codeListRainy = [1063, 1069, 1072, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1195, 1204, 1207, 1240, 1243, 1246, 1249, 1252];
+
+                if (!data.current.is_day) timeOfDay = 'night';
+
+                if (code === 1000) {
+                    app.style.backgroundImage = `url(./assets/img/${timeOfDay}/bg-clear.jpg)`;
+                    btn.style.background = (timeOfDay === 'day')?'#e5ba92':'181e27';
+                } else if (codeListCloudy.includes(code)) {
+                    app.style.backgroundImage = `url(./assets/img/${timeOfDay}/bg-cloudy.jpg)`;
+                    btn.style.background = (timeOfDay === 'day')?'#fa6d1b':'181e27';
+                } else if (codeListRainy.includes(code)) {
+                    app.style.backgroundImage = `url(./assets/img/${timeOfDay}/bg-rainy.jpg)`;
+                    btn.style.background = (timeOfDay === 'day')?'#647d75':'325c80';
+                } else {
+                    app.style.backgroundImage = `url(./assets/img/${timeOfDay}/bg-snowy.jpg)`;
+                    btn.style.background = (timeOfDay === 'day')?'#4d72aa':'1b1b1b';
+                }
+                app.style.opacity = "1";
+            })
+            .catch(() => {
+                alert('Ciudad no encontrada')
+                app.style.opacity = "1";
+            })
+            
+            //fetchWeatherData();
+            app.style.opacity = "1";
+        }
+
     </script>
 </body>
 </html>

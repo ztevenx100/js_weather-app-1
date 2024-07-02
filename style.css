@@ -8,7 +8,7 @@
 * {
     margin: 0; 
     padding: 0; 
-    &, &:: before, &:: after { box-sizing: border-box; }
+    &, &::before, &::after { box-sizing: border-box; }
 }
 
 body {
@@ -16,6 +16,7 @@ body {
     margin: 0;
     font-family: 'Rubik', sans-serif;
     background: var(--bg-color);
+    overflow: hidden;
 }
 
 input, button, textarea, select { font: inherit; }
@@ -26,7 +27,7 @@ h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
 img, video, svg { height: auto; max-width: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *:: before, *: :after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -47,9 +48,14 @@ h1, h3{
     background-size: cover;
     color: var(--text-color);
     opacity: var(--opacity);
+    display: grid;
+    grid-template-columns: 1fr 40vw;
+    grid-gap: 10px;
+    transition-property: background-image;
+    transition-duration: 1s;
 
     &::before{
-        content: "";
+        /* content: ""; */
         position: absolute;
         top: 0;
         left: 0;
@@ -58,12 +64,10 @@ h1, h3{
         background: rgba(0, 0, 0, 0.3);
         z-index: 0;
     }
+
 }
 
 .container{
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -72,40 +76,45 @@ h1, h3{
     flex-direction: column;
     /* padding: 2em 3em 4em 3em; */
 
-    & > div, & > aside, & > article {
+    & > div {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 }
 
-.city-time,
-.temp,
-.weather {
-    margin: 0 1em;
-}
+.info-weather{
+    grid-column: 1;
+    display: flex;
+    padding: 1em;
 
-.city-time{
-    margin: 0;
-    margin-bottom: .2em;
-    font-size: 3em;
-}
+    & .city-time {
+        margin: 0 1em;
+        & h3 {
+            margin: 0;
+            margin-bottom: .2em;
+            font-size: 3em;
+        }
+    }
 
-.temp {
-    margin: 0;
-    font-size: 7em;
-}
-.weather img {
-    display: block;
-    margin: .5em 0;
+    & .temp{
+        margin: 0;
+        font-size: 7em;
+    }
+
+    & .weather{
+        margin: 0 1em;
+        & svg {
+            display: block;
+            margin: .5em 0;
+            aspect-ratio: 1/1;
+        }
+    }
 }
 
 .panel{
-    position: absolute;
-    width: 40vw;
-    height: 100vh;
-    top: 0;
-    right: 0;
+    max-height: 100vh;
+    grid-column: 2;
     background: rgba(110, 110, 110, 0.25);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
@@ -113,13 +122,20 @@ h1, h3{
     z-index: 1;
     padding: 3em 2em;
     overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-color) #ccc;
+
+    & form{
+        margin-bottom: 3em;
+    }
+
     & ul{
         padding: 0 0 1em 0;
         margin: 2em 0;
         border-bottom: 1px solid #ccc;
         & li{
             color: #ccc;
-            margin: 2.5em0;
+            margin: 2.5em 0;
         }
         & h4{
             margin: 3em 0;
@@ -127,9 +143,6 @@ h1, h3{
     }
 }
 
-.panel form{
-    margin-bottom: 3em;
-}
 
 .submit{
     position: absolute;
@@ -183,4 +196,17 @@ h1, h3{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (max-width: 800px){
+    .weather-app{
+        grid-template-columns: 1fr;
+    }
+    .info-weather{
+        max-height: 40vh;
+    }
+    .panel{
+        grid-column: 1;
+        max-height: 60vh;
+    }
 }
