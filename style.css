@@ -1,0 +1,186 @@
+/* CSS RESET June 2024 */
+:root{
+    --bg-color: #111;
+    --text-color: #fff;
+    --opacity: 1;
+}
+
+* {
+    margin: 0; 
+    padding: 0; 
+    &, &:: before, &:: after { box-sizing: border-box; }
+}
+
+body {
+    min-height: 100dvh; 
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    background: var(--bg-color);
+}
+
+input, button, textarea, select { font: inherit; }
+
+p { text-wrap: pretty; }
+h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+
+img, video, svg { height: auto; max-width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *:: before, *: :after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition: none;
+    }
+}
+
+h1, h3{
+    font-weight: 400;
+}
+
+.weather-app {
+    min-height: 100vh;
+    background-image: url('./assets/img/bg-cloudy.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--text-color);
+    opacity: var(--opacity);
+
+    &::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 0;
+    }
+}
+
+.container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    /* padding: 2em 3em 4em 3em; */
+
+    & > div, & > aside, & > article {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.city-time,
+.temp,
+.weather {
+    margin: 0 1em;
+}
+
+.city-time{
+    margin: 0;
+    margin-bottom: .2em;
+    font-size: 3em;
+}
+
+.temp {
+    margin: 0;
+    font-size: 7em;
+}
+.weather img {
+    display: block;
+    margin: .5em 0;
+}
+
+.panel{
+    position: absolute;
+    width: 40vw;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    background: rgba(110, 110, 110, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    z-index: 1;
+    padding: 3em 2em;
+    overflow-y: scroll;
+    & ul{
+        padding: 0 0 1em 0;
+        margin: 2em 0;
+        border-bottom: 1px solid #ccc;
+        & li{
+            color: #ccc;
+            margin: 2.5em0;
+        }
+        & h4{
+            margin: 3em 0;
+        }
+    }
+}
+
+.panel form{
+    margin-bottom: 3em;
+}
+
+.submit{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1.5em;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: #fa6d1b;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: .4s;
+    transition-property: background;
+
+    &:hover{
+        background: #fff;
+        color: #000;
+    }
+}
+
+.search{
+    background: none;
+    border: none;
+    border-bottom: 1px #ccc solid;
+    padding: 0 1em .5em 0;
+    width: 80%;
+    color: #fff;
+    font-size: 1.1em;
+
+    &:focus{
+        outline: none;
+    }
+
+    &::placeholder{
+        color: #ccc;
+    }
+}
+
+.city{
+    display: block;
+    cursor:pointer;
+
+    &:hover{
+        color: var(--text-color);
+    }
+}
+
+.details li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
