@@ -120,7 +120,7 @@ h1, h3{
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     z-index: 1;
-    padding: 3em 2em;
+    padding: 2em 2em;
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: var(--bg-color) #ccc;
@@ -135,7 +135,7 @@ h1, h3{
         border-bottom: 1px solid #ccc;
         & li{
             color: #ccc;
-            margin: 2.5em 0;
+            margin: 1.5em 0;
         }
         & h4{
             margin: 3em 0;
@@ -148,7 +148,7 @@ h1, h3{
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1.5em;
+    padding: 1em 1.5em;
     margin: 0;
     border: none;
     outline: none;

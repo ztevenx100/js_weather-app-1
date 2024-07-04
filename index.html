@@ -45,6 +45,7 @@
                 </button>
             </form>
             <ul class="cities">
+                <li class="city">Colombia</li>
                 <li class="city">New York</li>
                 <li class="city">California</li>
                 <li class="city">Paris</li>
@@ -89,7 +90,16 @@
         const btn = document.querySelector('.submit');
         const cities = document.querySelectorAll('.city');
 
-        let cityInput = "London";
+        let cityInput = "Colombia";
+
+        window.addEventListener('load', () => {
+            const init = () => {
+                fetchWeatherData();
+                app.style.opacity = "0";
+            }
+            
+            init();
+        });
 
         cities.forEach((city) => {
             city.addEventListener('click', (e) => {
