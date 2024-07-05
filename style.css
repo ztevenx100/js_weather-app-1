@@ -2,6 +2,9 @@
 :root{
     --bg-color: #111;
     --text-color: #fff;
+    --text-color-li: #fff;
+    --text-color-li-hover: #000;
+    --border-color: #fff;
     --opacity: 1;
 }
 
@@ -51,16 +54,20 @@ h1, h3{
     display: grid;
     grid-template-columns: 1fr 40vw;
     grid-gap: 10px;
-    transition-property: background-image;
+    transition-property: background-image, opacity, color, border;
     transition-duration: 1s;
 
     &.day{
         color: #000;
         --text-color-li: #000;
+        --text-color-li-hover: var(--text-color);
+        --border-color: #000;
     }
     &.night{
         color: var(--text-color);
         --text-color-li: var(--text-color);
+        --text-color-li-hover: #000;
+        --border-color: var(--text-color);
     }
 
     &::before{
@@ -90,6 +97,11 @@ h1, h3{
         justify-content: center;
         align-items: center;
     }
+
+    h1 {
+        font-size: 2em;
+        font-weight: 600;
+    }
 }
 
 .info-weather{
@@ -99,6 +111,7 @@ h1, h3{
 
     & .city-time {
         margin: 0 1em;
+
         & h3 {
             margin: 0;
             margin-bottom: .2em;
@@ -112,13 +125,29 @@ h1, h3{
     }
 
     & .weather{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin: 0 1em;
+
         & svg {
             display: block;
             margin: .5em 0;
             aspect-ratio: 1/1;
+            transition-property: fill;
+            transition-duration: 1s;
         }
     }
+}
+
+.card{
+    width: 100%;
+    border-radius: 5px;
+    background: rgba(110, 110, 110, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    transition-property: color, border-color;
 }
 
 .panel{
@@ -127,12 +156,13 @@ h1, h3{
     background: rgba(110, 110, 110, 0.25);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    outline: 1px solid var(--border-color);
     z-index: 1;
     padding: 2em 2em;
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: var(--bg-color) #ccc;
+    transition-property: color, border-color, outline-color;
 
     & form{
         margin-bottom: 3em;
@@ -140,14 +170,28 @@ h1, h3{
 
     & ul{
         padding: 0 0 1em 0;
-        margin: 2em 0;
-        border-bottom: 1px solid #ccc;
+        margin: 1.5em 0;
+        border-bottom: 1px solid var(--border-color);
+        transition-property: color, border;
+
         & li{
             color: var(--text-color-li);
+            transition-property: color;
+            transition-duration: .5s;
             margin: 1.5em 0;
+
+            &.city{
+                display: block;
+                cursor:pointer;
+            
+                &:hover{
+                    color: var(--text-color-li-hover);
+                }
+            }
         }
+
         & h4{
-            margin: 3em 0;
+            margin: 1.5em 0;
         }
     }
 }
@@ -166,7 +210,7 @@ h1, h3{
     cursor: pointer;
     font-size: 1.2em;
     transition: .4s;
-    transition-property: background;
+    transition-property: background, color;
 
     &:hover{
         background: #fff;
@@ -177,7 +221,7 @@ h1, h3{
 .search{
     background: none;
     border: none;
-    border-bottom: 1px #ccc solid;
+    border-bottom: 1px solid var(--border-color);
     padding: 0 1em .5em 0;
     width: 80%;
     color: #fff;
@@ -192,15 +236,6 @@ h1, h3{
     }
 }
 
-.city{
-    display: block;
-    cursor:pointer;
-
-    &:hover{
-        color: var(--text-color);
-    }
-}
-
 .details li{
     display: flex;
     justify-content: space-between;
@@ -211,9 +246,11 @@ h1, h3{
     .weather-app{
         grid-template-columns: 1fr;
     }
+
     .info-weather{
         max-height: 40vh;
     }
+
     .panel{
         grid-column: 1;
         max-height: 60vh;

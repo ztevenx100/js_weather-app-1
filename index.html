@@ -12,7 +12,7 @@
         <article class="info-weather">
             <section class="container">
                 <h1 class="brand" >Web de Clima</h1>
-                <div>
+                <div class="card" >
                     <h2 class="temp" >16°</h2>
                     <div class="city-time" >
                         <h3 class="name" >Colombia</h3>
@@ -41,7 +41,7 @@
                     placeholder="Buscar ubicación..."
                 />
                 <button type="submit" class="submit" >
-                    search
+                    Buscar
                 </button>
             </form>
             <ul class="cities">
@@ -49,20 +49,23 @@
                 <li class="city">New York</li>
                 <li class="city">California</li>
                 <li class="city">Paris</li>
+                <li class="city">Berlin</li>
+                <li class="city">Roma</li>
+                <li class="city">Berna</li>
                 <li class="city">Tokyo</li>
             </ul>
             <ul class="details" >
                 <h4>Detalles de clima</h4>
                 <li>
-                    <span>Cloudy</span>
+                    <span>Nublado</span>
                     <span class="cloud" >89%</span>
                 </li>
                 <li>
-                    <span>Humidity</span>
+                    <span>Humedad</span>
                     <span class="humidity" >64%</span>
                 </li>
                 <li>
-                    <span>Wind</span>
+                    <span>Viento</span>
                     <span class="wind" >8km/h</span>
                 </li>
             </ul>
@@ -74,7 +77,7 @@
         import SvgClear from './lib/icons/SvgClear.js';
         import SvgRainy from './lib/icons/SvgRainy.js';
         import SvgSnowy from './lib/icons/SvgSnowy.js';
-        import { fetchWeatherData } from './lib/utils.js';
+        import { fetchWeatherData } from './lib/main.js';
         
         const icon = document.getElementById('svg-container');
         icon.innerHTML = SvgCloudy({width: 50, height: 50, fill:'#fff'});
